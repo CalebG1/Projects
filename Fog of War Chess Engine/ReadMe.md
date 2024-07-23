@@ -33,7 +33,12 @@ Let us contrast the key differences in the imperfect information that exist betw
   <img src="img/neuralnet_deepnash.webp" alt="Statoscope example" width="650">
 </p>
 
-While similar to the Stratego AI in that it holds both piece-to-type assignments and private and public information tensors, they are distinct in how they are represented to be able to account for incomplete information gain and differing pieces of imperfect information. Note that a piece-to-type assignment for a player is the knowledge of every pieces position that is on the board and can be accounted for by a 8x8x7x10 board where the first two dimensions represent the row and column of the board, whereas the third dimension represents the piece assignment (pawn, rook, knight, bishop, queen, king, or empty), and where the last dimension represents a 9 move state history of the last time that it was seen (if it had even been seen, otherwise 10 is representative of unobserved).
+While similar to the Stratego AI in that it holds both piece-to-type assignments and private and public information tensors, they are distinct in how they are represented to be able to account for incomplete information gain and differing pieces of imperfect information. 
+<a href="img/AgentObservation.png" target="_blank">
+    <img src="img/AgentObservation.png" align="left"
+         alt="Size Limit logo by Anton Lovchikov" width="300" height="150">
+</a>
+Note that a piece-to-type assignment for a player is the knowledge of every pieces position that is on the board and can be accounted for by a 8x8x7x10 board where the first two dimensions represent the row and column of the board, whereas the third dimension represents the piece assignment (pawn, rook, knight, bishop, queen, king, or empty), and where the last dimension represents a 9 move state history of the last time that it was seen (if it had even been seen, otherwise 10 is representative of unobserved).
 
 ## Details
 ### Fog of War Game Strategy
@@ -52,7 +57,13 @@ Nash Equilibrium, a concept initially developed by John Nash is a state in which
 
 In imperfect information games, players do not have complete information about the game or the strategies chosen by their opponents. In imperfect information games, players make decisions based on their beliefs about the likely strategies of others, given the information available to them. For this reason, Nash equilibria for imperfect information games look very different compared to perfect information games. If you play a deterministic policy in an imperfect information game, the adversary can learn your exact policy and gain information about the game state. Thus Nash equilibria in imperfect information games consist of stochastic policies and have a probabilistic outcome.
 
+
 ### Need for Nash Estimation
+<a href="img/DynamicsStep.png" target="_blank">
+    <img src="img/DynamicsStep.png" align="right"
+         alt="Size Limit logo by Anton Lovchikov" width="390" height="463">
+</a>
+
 The challenge for Fog of War chess comes not only in that it is a large scale imperfect information game, but in that there are also elements of asymmetry and position-dependency that make most of the neural network architectures of large space games ineffective. This has the result of a purely rule-defined action space that therefore cannot use certain algorithmic techniques such as AlphaGo. AlphaZero, however, was able to effectively learn super-human chess level in under a day of training time with the following setup of mathematical form. In place of static game valuation functions or heuristics, AlphaZero implements a deep neural network architecture $(p,v) = f_{\theta}(s)$ where the network takes the board position as an input and outputs a vector of move probabilities in the form of $p_a = Pr(a|s)$. The value for each state is then calculated with the expectation of the expected state at each given position which in turn yields a clear loss function for the neural network. AlphaZero also improves efficiency through various methods including the implementation of Monte-Carlo tree search (notably instead of Alpha-Beta pruning). Succinctly, the loss function of the neural network is defined as follows:
 
 $l = (z - v)^2 - \pi^T logp + c||\theta||^2$
