@@ -9,3 +9,13 @@ Following the preprocessing stage, we move onto recognizing the various kinds of
 We then extract any diagrams present in the image using another bounding box based approach. Then, we using a variational autoencoder in tandem with a nearest neighbors model to serve similar diagrams and related documents -- for any diagram in the source space, we find its nearest neighbor in the latent space of the autoencoder and serve the documents corresponding to these nearest neighbors in the digital representation.\\  \\
 
 Finally, we synthesize the outputs of the various stages of processing into a single information-rich, digital document that the user may readily return to at any point in the future. 
+
+<a href="img/board_view.webp" target="_blank">
+    <img src="img/board_view.webp" align="right" alt="Size Limit logo by Anton Lovchikov" width="40%">
+</a>
+
+<a href="img/conversions_digitool.webp" target="_blank">
+    <img src="img/conversions_digitool.webp" align="right" alt="Size Limit logo by Anton Lovchikov" width="40%">
+</a>
+
+
