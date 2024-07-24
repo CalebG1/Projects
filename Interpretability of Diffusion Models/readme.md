@@ -38,21 +38,62 @@ Percent of Ranks Aligned = $\frac{\text{No. of tokens with correctly assigned ra
 
 Example: calculating the Percent of Ranks Aligned for Shapley values of \textit{ a cat's house}:
 
-<div style="text-align: center;">
-    <a href=img/RanksAlignedExample.png>
-        <img src=img/RanksAlignedExample.png alt="IMAGE ALT TEXT HERE" align="center"/>
-    </a>
-</div>
+| Tokens in *a cat's house* | a    | cat's | house |
+|---------------------------|------|-------|-------|
+| Ground truth score        | 0.05 | 0.45  | 0.5   |
+| Ground truth rank         | 3    | 2     | 1     |
+| Shapley score             | 0.13 | 0.59  | 0.28  |
+| Shapley rank              | 3    | 1     | 2     |
+| Ranks are aligned         | T    | F     | F     |
 
-\begin{tabular}{|l|l|l|l|}
-\hline
-Tokens in \textit{ a cat's house} & a    & cat's & house \\ \hline
-ground truth score    & 0.05 & 0.45  & 0.5   \\ \hline
-ground truth rank                & 3    & 2     & 1     \\ \hline
-Shapley score            & 0.13 & 0.59  & 0.28  \\ \hline
-Shapley rank                        & 3    & 1     & 2     \\ \hline
-Ranks are aligned                & T & F & F \\ \hline
-\end{tabular}
+### Root Mean Squared Error
+The Root Mean Squared Error (RMSE) calculates the root mean squared difference between ground truth importance scores and importance scores outputted by the explainability method of each token in the prompt
 
-Percent of Ranks Aligned = $\frac{1}{3}= 33.33\%$
+Root Mean Squared Error = $\sqrt{\frac{\sum_{i=1}^N{(x_i - \hat{x_i})^2}}{N}}$
+
+where $x_i$ is the ground truth importance score, $\hat{x_i}$ is the importance score of the explainability method (normalized to add up to one), and N is the number of tokens.
+
+\end{center}
+
+An example calculating the Root Mean Squared Error for Shapley values of \textit{ a cat's house} is shown below:
+
+
+| Tokens in *a cat's house* | a     | cat's | house |
+|---------------------------|-------|-------|-------|
+| Ground truth score        | 0.05  | 0.45  | 0.5   |
+| SHAP score                | 0.13  | 0.59  | 0.28  |
+| Squared Error             | 0.0064| 0.02  | 0.05  |
+
+Root Mean Squared Error = $\sqrt{\frac{0.0064 + 0.02 + 0.05 }{3}} 
+= 0.2728$
+
+## Methods
+### Token to Image Interpretability
+The first question that the interpretability algorithms are able to answer is whether or not the given token in the input is going to have a drastic change on the image as a whole. This 'change' for images is a difficult thing to measure in a context in which one must compare two elements of an image to determine which plays a larger role in the general meaning of the input. There are several ways in which these results can be measured and each of these comes with contextual upsides and downsides
+* $\textbf{CLIP similarity}$ is a way to move both of the images into a smaller latent space that can measure similarity by comparing the embeddings directly. It captures semantic similarities between images, even if visually dissimilar, by leveraging its pretrained knowledge. This has the benefit of being able to generally understand what semantic features of images are important, but it is not related to this task specifically. Still, this remains the best metric.
+* $\textbf{VAE similarity}$ encodes images into a latent space, where similar images have nearby representations. Similarity is determined by measuring distances between these latent vectors similar to in CLIP, but this task is specifically for prompt to image similarities. While there are several datasets of this, we decided cultivating more specific similarities and the compute required to train the VAE would not have had significant enough improvement over CLIP, so we decided not to implement this technique.
+* $\textbf{Latent Diffusion Embedding similarity}$ similar to the previous two methods, comparing the latent space. Notably this is within the specific model that is being used and requires open sourcing the model so that the intermediate modes can be seen. Further, this has the major disadvantage of not having similar spaces when similar objects are in different parts of the image (it does not extrapolate or embed to a sufficient degree).
+
+#### LIME Approach
+The LIME approach differs from classical methods in that the output of the model is an image rather than a classification with simple similarity. Further, implementing LIME to be able to use generative models required rewriting much of the algorithm to allow for the needed setup that this problem entailed. The figure below represents some of the differently generated models that can exist from the LIME generation. The main image is generated from the prompt "A Lamp with flowers", while the three images below are subsets consisisting from (in order from left to right) "Lamp with flowers", "A with flowers", "A lamp with". In practice, all of the subsets are chosen and weighted based off of how many of the other tokens are included in order to measure the difference between the original picture and the generated pictures. Due to compilation issues, this code must be manually completed in notebooks and cannot be run from the terminal the way other LIME libraries are able to function. This is big on the todo list as we continue this project into the summer!
+
+#### Shapely Values Approach
+The Shapley Values approach, similar to LIME, is adapted to generative models by adapting the nature of inputs and outputs. While in classical machine learning models, the model is trained on features and outputs a prediction, stable diffusion models take prompts as inputs and produce images as outputs. We adapt Shapley values to image-to-text generative models by assigning the following as inputs and outputs:
+
+
+* Each token in a prompt is a player e.g. when the prompt is $\textit{a cat's house}$, the players are $\textit{a}$, $\textit{cat's}$, and $\textit{house}$.
+* The complete coalition $D$ is the original prompt e.g. {a cat's house}, and the coalitions or subsets $S \subseteq D$ of the game  are all possible combinations of tokens in the same order e.g. a, cat's, house, a cat's, a cat's house, cat's house, a house. There are $2^d - 1$ subsets of a prompt (since we exclude the empty set).
+* The image similarity of a subset of tokens $S$ to the original prompt $D$ is its payoff, or value $v(S)$. 
+
+While there are methods to estimate Shapley values for games with larger values of d, this paper employs the original formula to calculate Shapley values:
+
+$\phi_{i}(v) = \sum_{S \subseteq D \symbol{92} i}{\frac{|S|!(d-1-|S|)!}{d!} [v(S \cup \{ i \}) - v(S)]}$
+
+The permutation-based algorithm is applied, that considers all possible orderings of tokens, and average marginal contributions across them for each token. The marginal contributions are normalized by dividing by the total of marginal contributions of each token to a prompt to get the Shapley value. 
+
+### Image to Generator
+Once we have an image generated and a description of the importance of tokens that went into the model as an input, the question still remains of what within the image relates to what tokens within the prompt. A motivating case for this could include wanting to make sure that when the model generates images that generated sections relate to the correct descriptors. In the case of radiology, one would want to know what in the image not only relates to the general prompt, but relates to the specific elements of the prompt. The same would go for many industries where precision about how to model views parts of the image could have large consequences. 
+
+The first step in correlating parts of the image to the desired parts of the prompt is segmenting the input in meaningful ways. We analyze this in two different ways. The first is in terms of what the model is looking at which would make this technique useful in understanding the hierarchy within the models interpretation of the prompt. The second approach is in terms of object segmentation and allows for a more human interpretable approach where the onlooking can quickly recognize what 'things' in the image relate instead of general regions of the image. The two methods are further explained below.
+
 
