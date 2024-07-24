@@ -40,7 +40,7 @@ Example: calculating the Percent of Ranks Aligned for Shapley values of \textit{
 
 <div style="text-align: center;">
     <a href=img/RanksAlignedExample.png>
-        <img src=img/RanksAlignedExample.png alt="IMAGE ALT TEXT HERE"/>
+        <img src=img/RanksAlignedExample.png alt="IMAGE ALT TEXT HERE" align="center"/>
     </a>
 </div>
 
