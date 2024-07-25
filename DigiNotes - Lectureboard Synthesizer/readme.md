@@ -1,5 +1,15 @@
 # DigiNotes: Comprehensive Lecture Note Digitization Tool
-Whether it’s the professors’ lecture notes on the chalkboard, or your friend’s handwritten notes on paper, the common method for copying down other people’s notes is taking a quick picture on your phone. One expects the content to be replete with some text, numerous equations, and a few diagrams. Our project explores the idea of converting handwritten words, equations, and diagrams into an easily digestible, digital format. Our project aims to recognize and process these inputs, by constructing a rich digital representation of the image for later use. GitHub Repository can be found \href{https://github.com/a-cowlagi/DigiNotes}{here}.
+<a href="img/DigiNotes-FirstPage.png" target="_blank">
+    <img src="img/DigiNotes-FirstPage.png" align="right" alt="Size Limit logo by Anton Lovchikov" width="40%">
+</a>
+
+When it comes to capturing notes, whether they're from a professor's lecture on a chalkboard or a friend's handwritten notes on paper, the easiest method is often to snap a quick photo with your phone. These images usually contain a mix of text, numerous equations, and some diagrams.
+
+Our project delves into the innovative process of transforming these handwritten elements into a digital format that is both accessible and easy to understand. By leveraging advanced recognition techniques, we aim to identify and process words, equations, and diagrams, converting them into a structured digital representation.
+
+This approach not only preserves the content for future reference but also enhances its usability by making it searchable and editable. Our goal is to bridge the gap between physical and digital note-taking, providing a seamless experience that maximizes the utility of captured notes. Through this project, we hope to make information more accessible and user-friendly, supporting learning and productivity.
+
+https://github.com/a-cowlagi/DigiNotes
 
 ## Introduction
 A hastily taken snapshot of a whiteboard is undoubtedly an image with plenty of noise and image nuisances (occlusions, lighting, brightness, etc.). Consequently, implementing a truly robust digitization pipeline requires a comprehensive preprocessing stage. Our preprocessing stage is able to return high-quality representations of the source image by performing 1) aspect ratio preserving perspective correction, 2) image enhancement and binarization, 3) line segmentation, 4) bounding box detection.
