@@ -48,3 +48,15 @@ For Video overview, click on image to the right
 Interpretable models are crucial for understanding complex black box models. Techniques like LIME and SHAP are well-known for their effectiveness, yet their use with generative diffusion models is still developing, especially in linking text prompts to generated images. Identifying which parts of an image relate to specific tokens can help address semantic misrepresentations. This project adapts SHAP and LIME for diffusion models to highlight imagery linked to each term. We aim to map words to objects in images by analyzing diffusion process steps using open-source models or state-of-the-art image segmentation. This method identifies the significance of words and their related image concepts, advancing explainable generative models by enhancing token and image shape interpretability.
 
 
+## 5.) DigiNotes: Comprehensive Lecture Note Digitization Tool
+<a href="DigiNotes - Lectureboard Synthesizer/img/DigiNotes-FirstPage.png" target="_blank">
+    <img src="DigiNotes - Lectureboard Synthesizer/img/DigiNotes-FirstPage.png" align="right" alt="Size Limit logo by Anton Lovchikov" width="40%">
+</a>
+
+When it comes to capturing notes, whether they're from a professor's lecture on a chalkboard or a friend's handwritten notes on paper, the easiest method is often to snap a quick photo with your phone. These images usually contain a mix of text, numerous equations, and some diagrams.
+
+Our project delves into the innovative process of transforming these handwritten elements into a digital format that is both accessible and easy to understand. By leveraging advanced recognition techniques, we aim to identify and process words, equations, and diagrams, converting them into a structured digital representation.
+
+This approach not only preserves the content for future reference but also enhances its usability by making it searchable and editable. Our goal is to bridge the gap between physical and digital note-taking, providing a seamless experience that maximizes the utility of captured notes. Through this project, we hope to make information more accessible and user-friendly, supporting learning and productivity.
+
+https://github.com/a-cowlagi/DigiNotes
