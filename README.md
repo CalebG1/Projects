@@ -34,3 +34,17 @@ Fog of War Chess, or Dark Chess, is a chess variant where players can only see t
 Built a first-person and interactive 3D World from scratch (no game engine) using C++ and the OpenGL pipeline. The game implements the key features of Minecraft as is described below in the expandable tabs. This includes a diverse landscape with different biomes and terrains, artificial intelligence in the non-playable characters, inventory/crafting systems, and much more. The final product included over 30 pairs of C++ header and source files as well as over a dozen glsl vertex and fragment shader files with over 10,000 total lines of written code. 
 
 For Video overview, click on image to the right
+
+
+
+## 4.) Adapting Interpretability Techniques to Generative Diffusion Models
+
+<div style="text-align: center;">
+    <a href="Interpretability of Diffusion Models/img/trustworthymachinelearning_diffusion.pdf">
+        <img src="Interpretability of Diffusion Models/img/TrustworthyML.png" alt="IMAGE ALT TEXT HERE" width=40% align="right"/>
+    </a>
+</div>
+
+Interpretable models are crucial for understanding complex black box models. Techniques like LIME and SHAP are well-known for their effectiveness, yet their use with generative diffusion models is still developing, especially in linking text prompts to generated images. Identifying which parts of an image relate to specific tokens can help address semantic misrepresentations. This project adapts SHAP and LIME for diffusion models to highlight imagery linked to each term. We aim to map words to objects in images by analyzing diffusion process steps using open-source models or state-of-the-art image segmentation. This method identifies the significance of words and their related image concepts, advancing explainable generative models by enhancing token and image shape interpretability.
+
+
